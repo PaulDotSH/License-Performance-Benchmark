@@ -67,5 +67,9 @@ fn main() {
     let max_file_size: usize = args[2].parse().expect("Please provide a valid number for maximum file size");
     let output_dir = "/tmp";
 
+    let start = Instant::now();
     split(file_path, output_dir, max_file_size);
+    let duration = start.elapsed();
+    let ns = duration.as_nanos();
+    println!("Execution time: {} ns", ns);
 }

@@ -2,10 +2,11 @@
 import numpy as np
 from numba import jit
 from PIL import Image
+import time
 import concurrent.futures
 
 @jit(nopython=True)
-def mandelbrot_numba(c_real, c_imag, max_iterations):
+def mandelbrot(c_real, c_imag, max_iterations):
     z_real, z_imag = 0.0, 0.0
     n = 0
     while n < max_iterations and z_real * z_real + z_imag * z_imag <= 4.0:
@@ -21,12 +22,12 @@ def compute_mandelbrot_row(row, width, height, x_min, x_max, y_min, y_max, max_i
 
     for x in range(width):
         c_real = x_min + (x / (width - 1)) * (x_max - x_min)
-        iteration = mandelbrot_numba(c_real, c_imag, max_iterations)
+        iteration = mandelbrot(c_real, c_imag, max_iterations)
         row_values[x] = iteration
 
     return row_values
 
-def create_mandelbrot_set_parallel(width, height, x_min, x_max, y_min, y_max, max_iterations):
+def create_mandelbrot_set(width, height, x_min, x_max, y_min, y_max, max_iterations):
     image = Image.new('RGB', (width, height), color='white')
     pixels = image.load()
 
@@ -41,11 +42,17 @@ def create_mandelbrot_set_parallel(width, height, x_min, x_max, y_min, y_max, ma
 
     return image
 
-if __name__ == "__main__":
-    WIDTH, HEIGHT = 1600, 1600
+def main():
+    WIDTH, HEIGHT = 800, 800
     X_MIN, X_MAX = -2.5, 1.5
     Y_MIN, Y_MAX = -2.0, 2.0
     MAX_ITERATIONS = 1000
 
-    mandelbrot_image = create_mandelbrot_set_parallel(WIDTH, HEIGHT, X_MIN, X_MAX, Y_MIN, Y_MAX, MAX_ITERATIONS)
+    mandelbrot_image = create_mandelbrot_set(WIDTH, HEIGHT, X_MIN, X_MAX, Y_MIN, Y_MAX, MAX_ITERATIONS)
     mandelbrot_image.save("mandelbrot.png")
+
+if __name__ == "__main__":
+    start = time.time_ns()
+    main()
+    duration = time.time_ns() - start
+    print(f"Execution time: {duration} ns")

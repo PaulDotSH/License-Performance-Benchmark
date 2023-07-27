@@ -57,7 +57,10 @@ fn main() {
     const Y_MAX: f64 = 2.0;
     const MAX_ITERATIONS: u32 = 1000;
 
-    let mandelbrot_image =
-        create_mandelbrot_set(WIDTH, HEIGHT, X_MIN, X_MAX, Y_MIN, Y_MAX, MAX_ITERATIONS);
+    let start = Instant::now();
+    let mandelbrot_image = create_mandelbrot_set(WIDTH, HEIGHT, X_MIN, X_MAX, Y_MIN, Y_MAX, MAX_ITERATIONS);
+    let duration = start.elapsed();
+    let ns = duration.as_nanos();
+    println!("Execution time: {} ns", ns);
     mandelbrot_image.save("mandelbrot.png").unwrap();
 }

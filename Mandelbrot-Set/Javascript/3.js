@@ -54,17 +54,25 @@ function create_mandelbrot_set(width, height, x_min, x_max, y_min, y_max, max_it
   return canvas;
 }
 
-const WIDTH = 3200;
-const HEIGHT = 3200;
-const X_MIN = -2.5;
-const X_MAX = 1.5;
-const Y_MIN = -2.0;
-const Y_MAX = 2.0;
-const MAX_ITERATIONS = 5000;
+function main() {
+  const WIDTH = 1600;
+  const HEIGHT = 1600;
+  const X_MIN = -2.5;
+  const X_MAX = 1.5;
+  const Y_MIN = -2.0;
+  const Y_MAX = 2.0;
+  const MAX_ITERATIONS = 5000;
 
-const mandelbrot_canvas = create_mandelbrot_set(WIDTH, HEIGHT, X_MIN, X_MAX, Y_MIN, Y_MAX, MAX_ITERATIONS);
-const fs = require('fs');
-const out = fs.createWriteStream(__dirname + '/mandelbrot.png');
-const stream = mandelbrot_canvas.createPNGStream();
-stream.pipe(out);
-out.on('finish', () => console.log('The PNG file was created.'));
+  const mandelbrot_canvas = create_mandelbrot_set(WIDTH, HEIGHT, X_MIN, X_MAX, Y_MIN, Y_MAX, MAX_ITERATIONS);
+  const fs = require('fs');
+  const out = fs.createWriteStream(__dirname + '/mandelbrot.png');
+  const stream = mandelbrot_canvas.createPNGStream();
+  stream.pipe(out);
+  out.on('finish', () => console.log('The PNG file was created.'));
+}
+
+const start = process.hrtime.bigint();
+main()
+const end = process.hrtime.bigint();
+const duration = end - start;
+console.log(`Execution time: ${duration} ns`);

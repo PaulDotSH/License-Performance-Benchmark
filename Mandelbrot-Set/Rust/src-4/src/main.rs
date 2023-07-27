@@ -56,6 +56,10 @@ fn create_mandelbrot_set() -> RgbImage {
 }
 
 fn main() {
+    let start = Instant::now();
     let mandelbrot_image = create_mandelbrot_set();
+    let duration = start.elapsed();
+    let ns = duration.as_nanos();
+    println!("Execution time: {} ns", ns);
     mandelbrot_image.save("mandelbrot.png").unwrap();
 }

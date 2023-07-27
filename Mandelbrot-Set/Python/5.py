@@ -1,4 +1,5 @@
 # Uses vectorization
+# TODO: FIX
 import numpy as np
 from PIL import Image
 from numba import jit

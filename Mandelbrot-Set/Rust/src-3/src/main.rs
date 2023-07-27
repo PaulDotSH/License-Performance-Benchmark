@@ -1,13 +1,13 @@
 use image::{Rgb, RgbImage};
 use rayon::prelude::*;
 
-const WIDTH: usize = 6400;
-const HEIGHT: usize = 6400;
+const WIDTH: usize = 12800;
+const HEIGHT: usize = 12800;
 const X_MIN: f64 = -2.5;
 const X_MAX: f64 = 1.5;
 const Y_MIN: f64 = -2.0;
 const Y_MAX: f64 = 2.0;
-const MAX_ITERATIONS: u32 = 5000;
+const MAX_ITERATIONS: u32 = 1500;
 
 fn mandelbrot(c: (f64, f64)) -> u32 {
     let mut z = (0.0, 0.0);
@@ -54,6 +54,9 @@ fn create_mandelbrot_set() -> RgbImage {
 }
 
 fn main() {
+    let start = Instant::now();
     let mandelbrot_image = create_mandelbrot_set();
-    mandelbrot_image.save("mandelbrot.png").unwrap();
+    let duration = start.elapsed();
+    let ns = duration.as_nanos();
+    println!("Execution time: {} ns", ns);    mandelbrot_image.save("mandelbrot.png").unwrap();
 }
